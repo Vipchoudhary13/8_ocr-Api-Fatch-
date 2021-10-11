@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search Engine</title>
+    <style>
+        #data{
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Movies</h1>
+
+    <input type="text" id="movie" placeholder="Enter Movie Name" />
+    <button onclick="getMovie()">Search</button>
+    <div id="data"></div>
+</body>
+</html>
+<script>
+    let container = document.getElementById("data");
+    async function getMovie(){
+        let movie = document.getElementById("movie").value;
+
+        let res = await fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=8da84ed8`);
+
+        let data = await res.json();
+        console.log("data", data);
+
+        searchMovie(data)
+    }
+
+    function searchMovie(movie){
+        let img = document.createElement("img");
+        img.src = movie.Poster;
+
+        let name = document.createElement("p");
+        name.innerText = movie.Title;
+
+        let date = document.createElement("p");
+        date.innerText = movie.Released;
+
+        let Actor = document.createElement('p');
+        Actor.innerText = movie.Actors;
+
+        let director = document.createElement("p");
+        director.innerText = movie.Director;
+
+        let country = document.createElement("p");
+        country.innerText = movie.Country;
+
+        let runtime = document.createElement("p");
+        runtime.innerText = movie.Runtime;
+
+        let rating = document.createElement("p");
+        rating.innerText = movie.Ratings[0].Value;
+
+        container.append(img, name, date, Actor, director, country, runtime, rating);
+    }
+</script>
