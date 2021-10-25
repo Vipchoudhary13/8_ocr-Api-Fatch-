@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1 {
+        text-align: center;
+        font-size: 50px;
+        color: blueviolet
+            /* border: 1px solid black; */
+    }
+
+    #cont {
+        width: 30%;
+        margin: auto;
+    }
+
+    button {
+        background-color: blue;
+        color: white;
+    }
+
+    #data {
+        margin-top: 30px;
+    }
+</style>
+
+<body>
+    <h1>Movies</h1>
+    <div id="cont">
+        <input type="text" id="movie" placeholder="Enter movie name" />
+        <button onclick="getMovie()">Search</button>
+        <div id="data"></div>
+    </div>
+
+</body>
+
+</html>
+
+<script>
+    let container = document.getElementById("data")
+    async function getMovie() {
+        let movie = document.getElementById("movie").value
+        try {
+            let res = await fetch(`http://www.omdbapi.com/?apikey=8da84ed8&s=${movie}`);
+            let data = await res.json();
+
+            console.log("data:", data);
+            searchMovie(data)
+        }
+        catch (err) {
+            console.log("err:", err);
+        }
+        
+
+    }
+
+    // getMovie();
+    
+    function searchMovie(movie) {
+        data.innerHTML = null;
+        if (movie.Response == 'False') {
+            let img = document.createElement("img");
+            img.src = "https://img-16.ccm2.net/_SqzzXVDSG50FWb_UBrCl3XwV78=/440x/1685e17045e747a899925aa16189c7c6/ccm-encyclopedia/99776312_s.jpg"
+            container.append(img)
+        } else {
+            let img = document.createElement("img");
+            img.src = movie.Search[0].Poster;
+
+            let name = document.createElement("p");
+            name.innerText = movie.Search[0].Title;
+
+            let release = document.createElement("p");
+            release.innerText = movie.Search[0].Year;
+
+            container.append(img, name, release);
+        }
+
+
+    }
+
+</script>
