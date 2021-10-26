@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1{
+        text-align: center;
+        font-size: 50px;
+
+    }
+    #cont {
+        width: 20%;
+        margin: auto ;
+    }
+
+    button {
+        background-color: rgb(162, 0, 255);
+        color: white;
+    }
+
+    #data {
+        margin-top: 30px;
+    }
+</style>
+<body>
+    <h1>Movies info</h1>
+    <div id="cont">
+        <input type="text" id="movie" placeholder="Enter movie name" />
+        <button onclick="getMovie()">Search</button>
+        <div id="data"></div>
+    </div>
+</body>
+</html>
+
+<script>
+    let container = document.getElementById("data");
+    async function getMovie(){
+        let movie = document.getElementById("movie").value;
+        try{
+            let res = await fetch(`http://www.omdbapi.com/?&t=${movie}&apikey=8da84ed8`);
+            let data = await res.json();
+            console.log("data:", data);
+
+            searchMovie(data)
+        }
+        catch(err){
+            console.log("err:", err);
+        }
+    }
+    
+    function searchMovie(movie){
+        data.innerHTML = null;
+        if(movie.Responce == 'False'){
+            let img = document.createElement("img");
+            img.src = "https://img-16.ccm2.net/_SqzzXVDSG50FWb_UBrCl3XwV78=/440x/1685e17045e747a899925aa16189c7c6/ccm-encyclopedia/99776312_s.jpg";
+            container.append(img) 
+        } else{
+            let img = document.createElement("img");
+            img.src = movie.Poster;
+
+            let name = document.createElement("p");
+            name.innerText = movie.Title;
+
+            let date = document.createElement("r");
+            date.innerText = "Released - " + movie.Released;
+
+            let A_name = document.createElement("p");
+            A_name.innerText = "Actors - " + movie.Actors;
+
+            let D_name = document.createElement("p");
+            D_name.innerText = "Director - " + movie.Director;
+
+            let runtime = document.createElement("p");
+            runtime.innerText = "Runtime - " + movie.Runtime;
+
+            let rating = document.createElement("r");
+            if(movie.imdbRating > 8){
+                let imge = document.createElement("img");
+                imge.src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqyXkkvpCS3voWMAof3rxUuE2UXITew9MhcA&usqp=CAU"
+                rating.innerText = "Rating - " + movie.imdbRating;
+                container.append(img, name, date, A_name, D_name, runtime, rating, imge);
+            } else{
+                rating.innerText = "Rating - " + movie.imdbRating;
+                container.append(img, name, date, A_name, D_name, runtime, rating);
+            }
+        }
+    }
+</script>
